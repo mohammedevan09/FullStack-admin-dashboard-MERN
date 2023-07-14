@@ -74,7 +74,7 @@ const Monthly = () => {
               },
               tooltip: {
                 container: {
-                  color: theme.palette.primary.main,
+                  color: theme.palette.secondary[1000],
                 },
               },
             }}
