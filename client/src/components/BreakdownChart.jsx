@@ -78,7 +78,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
           },
           tooltip: {
             container: {
-              color: theme.palette.primary.main,
+             color: theme.palette.secondary[1000],
             },
           },
         }}
