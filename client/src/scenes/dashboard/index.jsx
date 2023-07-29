@@ -63,9 +63,9 @@ const Dashboard = () => {
             sx={{
               backgroundColor: theme.palette.secondary.light,
               color: theme.palette.background.alt,
-              fontSize: '14px',
+               fontSize: isNonMediumScreens ? '14px' : '11px',
               fontWeight: 'bold',
-              padding: '10px 20px',
+              padding: isNonMediumScreens ? '10px 20px' : '5px 7px',
             }}
           >
             <DownloadOutlined sx={{ mr: '10px' }} />
