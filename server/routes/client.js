@@ -4,10 +4,12 @@ import {
   getCustomers,
   getTransactions,
   getGeography,
+  loginUser,
 } from '../controllers/client.js'
 
 const router = express.Router()
 
+router.post('/login', loginUser)
 router.get('/products', getProducts)
 router.get('/customers', getCustomers)
 router.get('/transactions', getTransactions)

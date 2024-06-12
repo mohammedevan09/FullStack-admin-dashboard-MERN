@@ -15,6 +15,9 @@ import Monthly from './scenes/monthly/index.jsx'
 import Breakdown from './scenes/breakdown/index.jsx'
 import Admin from './scenes/admin/index.jsx'
 import Performance from './scenes/performance/index.jsx'
+import Login from './scenes/login/index.jsx'
+import ProtectedRoute from './components/ProtectedRoutes.jsx'
+import RestrictedRoute from './components/RestrictedRoute.jsx'
 
 function App() {
   const mode = useSelector((state) => state?.global?.mode)
@@ -26,19 +29,27 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/customers" element={<Customers />} />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/geography" element={<Geography />} />
-              <Route path="/overview" element={<Overview />} />
-              <Route path="/daily" element={<Daily />} />
-              <Route path="/monthly" element={<Monthly />} />
-              <Route path="/breakdown" element={<Breakdown />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/performance" element={<Performance />} />
+            <Route path="/login" element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<Layout />}>
+                <Route
+                  path="/"
+                  element={<Navigate to="/dashboard" replace />}
+                />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/geography" element={<Geography />} />
+                <Route path="/overview" element={<Overview />} />
+                <Route path="/daily" element={<Daily />} />
+                <Route path="/monthly" element={<Monthly />} />
+                <Route path="/breakdown" element={<Breakdown />} />
+                <Route element={<RestrictedRoute allowedRoles={['admin']} />}>
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/transactions" element={<Transactions />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/performance" element={<Performance />} />
+                </Route>
+              </Route>
             </Route>
           </Routes>
         </ThemeProvider>

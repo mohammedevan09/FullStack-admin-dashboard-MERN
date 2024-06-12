@@ -5,7 +5,7 @@ import './index.css'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import globalSlice from './state/index.jsx'
-import { setupListeners } from '@reduxjs/toolkit/dist/query/index.js'
+import { setupListeners } from '@reduxjs/toolkit/query'
 import { api } from './state/api.jsx'
 
 const store = configureStore({
@@ -15,6 +15,7 @@ const store = configureStore({
   },
   middleware: (getDefault) => getDefault().concat(api.middleware),
 })
+
 setupListeners(store.dispatch)
 
 ReactDOM.createRoot(document.getElementById('root')).render(

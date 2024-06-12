@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -31,6 +32,8 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import profileImage from '../assets/profile.jpeg'
+import { logoutUser } from '../state'
+import { useDispatch, useSelector } from 'react-redux'
 
 const navItems = [
   {
@@ -91,6 +94,14 @@ const navItems = [
   },
 ]
 
+const restrictedFields = [
+  'Customers',
+  'Transactions',
+  'Management',
+  'Admin',
+  'Performance',
+]
+
 const Sidebar = ({
   user,
   drawerWidth,
@@ -98,9 +109,17 @@ const Sidebar = ({
   setIsSidebarOpen,
   isNonMobile,
 }) => {
+  const role = useSelector((state) => state?.global?.role)
+
+  const updatedNav =
+    role === 'admin'
+      ? navItems
+      : navItems.filter((item) => !restrictedFields.includes(item.text))
+
   const { pathname } = useLocation()
   const [active, setActive] = useState('')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const theme = useTheme()
   // console.log(pathname)
 
@@ -143,7 +162,7 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon }) => {
+              {updatedNav.map(({ text, icon }) => {
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: '2.25rem 0 1rem 3rem' }}>
@@ -195,7 +214,20 @@ const Sidebar = ({
           </Box>
           <Box position="absolute" bottom="2rem">
             <Divider />
-            <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
+            <FlexBetween
+              textTransform="none"
+              gap="1rem"
+              m="1.5rem 2rem 0 3rem"
+              fontSize="16px"
+              onClick={() => dispatch(logoutUser())}
+              sx={{
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
               <Box
                 component="img"
                 alt="profile"
@@ -205,27 +237,7 @@ const Sidebar = ({
                 borderRadius="50%"
                 sx={{ objectFit: 'cover' }}
               />
-              <Box textAlign="left">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="0.9rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  {user?.name}
-                </Typography>
-                <Typography
-                  fontSize="0.8rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  {user.occupation}
-                </Typography>
-              </Box>
-              <SettingsOutlined
-                sx={{
-                  color: theme.palette.secondary[300],
-                  fontSize: '25px ',
-                }}
-              />
+              Logout
             </FlexBetween>
           </Box>
         </Drawer>
